@@ -1,0 +1,20 @@
+version: "3.7"
+
+services:
+  account:
+    build:
+      context: "."
+      dockerfile: "./account/app.dockerfile"
+    depends_on:
+      - "account_db"
+    environment:
+      DATABASE_URL: "postgres://microstore:123456@account_db/microstore?sslmode=disable"
+  account_db:
+    build:
+      context: "./account"
+      dockerfile: "./db.dockerfile"
+    environment:
+      POSTGRES_DB: "microstore"
+      POSTGRES_USER: "microstore"
+      POSTGRES_PASSWORD: "123456"
+    restart: "unless-stopped"
